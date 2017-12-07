@@ -2,18 +2,13 @@
   <body>
     <p>There are {{ total }} games registered in this database.</p>
 
+    {% for statistic in stats %}
     <div style="width:50%; float:left;">
-      <h2>{{ low|length }} lowest scores</h2>
-      {% for hand in low %}
+      <h2>{{ stats[statistic]|length }} {{ statistic }}</h2>
+      {% for hand in stats[statistic] %}
       <p>{{ hand }}</p>
       {% endfor %}
     </div>
-
-    <div style="width:50%; float:left;">
-      <h2>{{ high|length }} highest scores</h2>
-      {% for hand in high %}
-      <p>{{ hand }}</p>
-      {% endfor %}
-    </div>
+    {% endfor %}
   </body>
 </html>
