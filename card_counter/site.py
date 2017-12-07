@@ -14,8 +14,3 @@ def overview():
     stat_funcs = dict(getmembers(stats, isfunction))
     rendered_stats = {name.replace('_', ' '): function() for name, function in random.sample(stat_funcs.items(), 2)}
     return render_template('index.html', total=count, stats=rendered_stats)
-
-
-if __name__ == '___main__':
-    app.debug = True
-    app.run(host='0')
