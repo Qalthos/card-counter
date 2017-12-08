@@ -1,5 +1,6 @@
-<html>
-  <body>
+{% extends "base.html" %}
+
+{% block content %}
     <p>There are {{ total }} games registered in this database.</p>
 
     {% for statistic in stats %}
@@ -10,5 +11,4 @@
       {% endfor %}
     </div>
     {% endfor %}
-  </body>
-</html>
+{% endblock %}
