@@ -19,3 +19,8 @@ def overview():
 def show_player(player_id):
     player = Player.query.filter_by(id=player_id).one()
     return render_template('player.html', player=player)
+
+@app.route('/game/<game_id>')
+def show_game(game_id):
+    game = Game.query.filter_by(id=game_id).one()
+    return render_template('game.html', game=game)
