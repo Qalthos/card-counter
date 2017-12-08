@@ -32,6 +32,10 @@ class Game(Base):
         return [score for score in self.scores if score.score == lowest_score]
 
     @hybrid_property
+    def players(self):
+        return [hand.player for hand in self.scores]
+
+    @hybrid_property
     def winning_player(self):
         return [hand.player for hand in self.winning_hand]
 
@@ -68,6 +72,10 @@ class Player(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
+
+    @hybrid_property
+    def games(self):
+        return [game for game in Game.query.all() if self in game.players]
 
     @hybrid_property
     def won_games(self):
