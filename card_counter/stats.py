@@ -5,12 +5,10 @@ from card_counter.models import Game, Player, Score
 
 def _render(title, data):
     template = '''
-<div style="width:50%; float:left;">
-  <h2>{{ title }}</h2>
-  {% for datum in data %}
-  <p>{{ datum|safe }}</p>
-  {% endfor %}
-</div>
+<h2>{{ title }}</h2>
+{% for datum in data %}
+<p>{{ datum|safe }}</p>
+{% endfor %}
 '''
     return render_template_string(template, title=title.format(len(data)), data=data)
 

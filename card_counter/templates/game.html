@@ -1,20 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Game {{ game.id }} played on {{ game.date }}</h2>
-    <table>
-      <thead>
-        <tr><td></td>{% for hand in game.scores %}<td><a href="{{ url_for('show_player', player_id=hand.player.id) }}">{{ hand.player.name }}</a></td>{% endfor %}</tr>
-      </thead>
-      <tbody>
-        <tr><td>Six</td>{% for hand in game.scores %}<td>{{ hand.six }}</td>{% endfor %}</tr>
-        <tr><td>Seven</td>{% for hand in game.scores %}<td>{{ hand.seven }}</td>{% endfor %}</tr>
-        <tr><td>Eight</td>{% for hand in game.scores %}<td>{{ hand.eight }}</td>{% endfor %}</tr>
-        <tr><td>Nine</td>{% for hand in game.scores %}<td>{{ hand.nine }}</td>{% endfor %}</tr>
-        <tr><td>Ten</td>{% for hand in game.scores %}<td>{{ hand.ten }}</td>{% endfor %}</tr>
-      </tbody>
-      <tfoot style="border-top:1px">
-        <tr><td>Total</td>{% for hand in game.scores %}<td>{{ hand.score }}</td>{% endfor %}</tr>
-      </tfoot>
-    </table>
+  <h2>Game {{ game.id }} played on {{ game.date }}</h2>
+  <table>
+    <thead>
+      <tr><td></td>{% for hand in game.scores %}<td>{{ hand.player|safe }}</td>{% endfor %}</tr>
+    </thead>
+    <tbody>
+      <tr><th>Six</th>{% for hand in game.scores %}<td>{{ hand.six }}</td>{% endfor %}</tr>
+      <tr><th>Seven</th>{% for hand in game.scores %}<td>{{ hand.seven }}</td>{% endfor %}</tr>
+      <tr><th>Eight</th>{% for hand in game.scores %}<td>{{ hand.eight }}</td>{% endfor %}</tr>
+      <tr><th>Nine</th>{% for hand in game.scores %}<td>{{ hand.nine }}</td>{% endfor %}</tr>
+      <tr><th>Ten</th>{% for hand in game.scores %}<td>{{ hand.ten }}</td>{% endfor %}</tr>
+    </tbody>
+    <tfoot>
+      <tr><th>Total</th>{% for hand in game.scores %}<td>{{ hand.score }}</td>{% endfor %}</tr>
+    </tfoot>
+  </table>
+{% endblock %}
+
+{% block head_local %}
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+    thead {
+      border-bottom: 1px solid;
+    }
+    tfoot {
+      border-top: 1px solid;
+    }
+    th {
+      border-right: 1px solid;
+    }
+    td {
+      padding-left: 10px;
+      text-align: right;
+    }
+  </style>
 {% endblock %}
