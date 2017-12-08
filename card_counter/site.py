@@ -10,7 +10,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def overview():
-    count = Game.query.count()
+    player_count = Player.query.count()
+    game_count = Game.query.count()
     rendered_stats = random.sample((
         stats.lowest_scores(),
         stats.highest_scores(),
@@ -18,7 +19,7 @@ def overview():
         stats.best_players(),
         stats.recent_games(),
     ), 2)
-    return render_template('index.html', total=count, stats=rendered_stats)
+    return render_template('index.html', player_count=player_count, game_count=game_count, stats=rendered_stats)
 
 
 @app.route('/players')

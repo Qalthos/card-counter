@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <p>There are {{ total }} games registered in this database.</p>
+<p>There are <a href="{{ url_for('players') }}">{{ player_count }} players</a> and <a href="{{ url_for('games') }}">{{ game_count }} games</a> registered in this database.</p>
 
-    {% for statistic in stats %}
-    {{ statistic|safe }}
-    {% endfor %}
+{% for statistic in stats %}
+{{ statistic|safe }}
+{% endfor %}
 {% endblock %}
