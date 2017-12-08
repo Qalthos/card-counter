@@ -1,6 +1,6 @@
 from flask import render_template_string
 
-from card_counter.models import Game, Score
+from card_counter.models import Player, Score
 
 TEMPLATE = '''
 <div style="width:50%; float:left;">
@@ -16,11 +16,27 @@ HAND_TEMPLATE = "<a href='{{ url_for('show_player', player_id=hand.player.id) }}
 
 def lowest_scores():
     query = Score.query.order_by(Score.score).limit(5).all()
-    rendered_hands = [render_template_string(HAND_TEMPLATE, hand=hand) for hand in query]
+    rendered_hands = (render_template_string(HAND_TEMPLATE, hand=hand) for hand in query)
     return render_template_string(TEMPLATE, title=f'{len(query)} lowest scores', data=rendered_hands)
 
 
 def highest_scores():
     query = Score.query.order_by(Score.score.desc()).limit(5).all()
-    rendered_hands = [render_template_string(HAND_TEMPLATE, hand=hand) for hand in query]
+    rendered_hands = (render_template_string(HAND_TEMPLATE, hand=hand) for hand in query)
     return render_template_string(TEMPLATE, title=f'{len(query)} highest scores', data=rendered_hands)
+
+
+def winningest_players():
+    template = "<a href='{{ url_for('show_player', player_id=player.id) }}'>{{ player.name }}</a> has won " \
+        "{{ player.won_games|length }} games"
+    players = sorted(Player.query.all(), key=lambda p:len(p.won_games), reverse=True)[:5]
+    player_strings = (render_template_string(template, player=player) for player in players)
+    return render_template_string(TEMPLATE, title=f'{len(players)} winningest players', data=player_strings)
+
+
+def best_players():
+    template = "<a href='{{ url_for('show_player', player_id=player.id) }}'>{{ player.name }}</a> has won " \
+            "{{ (100 * player.won_games|length) // player.games|length }}% of games"
+    players = sorted(Player.query.all(), key=lambda p:len(p.won_games)/len(p.games), reverse=True)[:5]
+    player_strings = (render_template_string(template, player=player) for player in players)
+    return render_template_string(TEMPLATE, title=f'{len(players)} top players', data=player_strings)
