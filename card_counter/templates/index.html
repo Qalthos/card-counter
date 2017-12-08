@@ -4,11 +4,6 @@
     <p>There are {{ total }} games registered in this database.</p>
 
     {% for statistic in stats %}
-    <div style="width:50%; float:left;">
-      <h2>{{ stats[statistic]|length }} {{ statistic }}</h2>
-      {% for hand in stats[statistic] %}
-      <p>{{ hand }}</p>
-      {% endfor %}
-    </div>
+    {{ statistic|safe }}
     {% endfor %}
 {% endblock %}
