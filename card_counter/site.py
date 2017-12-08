@@ -16,6 +16,7 @@ def overview():
         stats.highest_scores(),
         stats.winningest_players(),
         stats.best_players(),
+        stats.recent_games(),
     ), 2)
     return render_template('index.html', total=count, stats=rendered_stats)
 

@@ -1,6 +1,6 @@
 from flask import render_template_string
 
-from card_counter.models import Player, Score
+from card_counter.models import Game, Player, Score
 
 
 def _render(title, data):
@@ -40,3 +40,6 @@ def best_players():
     return _render('{} top players', player_strings)
 
 
+def recent_games():
+    games = Game.query.order_by(Game.date.desc()).limit(5).all()
+    return _render('{} most recent games', games)
