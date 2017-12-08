@@ -20,10 +20,22 @@ def overview():
     ), 2)
     return render_template('index.html', total=count, stats=rendered_stats)
 
+
+@app.route('/players')
+def players():
+    return render_template('list.html', items=Player.query.all())
+
+
 @app.route('/player/<player_id>')
 def show_player(player_id):
     player = Player.query.filter_by(id=player_id).one()
     return render_template('player.html', player=player)
+
+
+@app.route('/games')
+def games():
+    return render_template('list.html', items=Game.query.all())
+
 
 @app.route('/game/<game_id>')
 def show_game(game_id):
