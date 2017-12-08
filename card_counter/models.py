@@ -1,5 +1,5 @@
+from flask import url_for
 from sqlalchemy import Column, ForeignKey, BLOB, Date, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 
@@ -40,7 +40,7 @@ class Game(Base):
         return [hand.player for hand in self.winning_hand]
 
     def __str__(self):
-        return '\n'.join((str(score) for score in self.scores))
+        return "<a href='{1}'>{0.date} [{0.id}]</a>".format(self, url_for('show_game', game_id=self.id))
 
 
 class Score(Base):
@@ -63,6 +63,9 @@ class Score(Base):
     def score(self):
         return sum((self.six, self.seven, self.eight, self.nine, self.ten))
 
+    def __str__(self):
+        return "{1} scored {0.score} points: {0.six} {0.seven} {0.eight} {0.nine} {0.ten}".format(self, self.player)
+
 
 class Player(Base):
     __tablename__ = 'player'
@@ -77,3 +80,6 @@ class Player(Base):
     @hybrid_property
     def won_games(self):
         return [game for game in Game.query.all() if self in game.winning_player]
+
+    def __str__(self):
+        return "<a href='{1}'>{0.name}</a>".format(self, url_for('show_player', player_id=self.id))
