@@ -17,13 +17,15 @@ HAND_TEMPLATE = "<a href='{{ url_for('show_player', player_id=hand.player.id) }}
 def lowest_scores():
     query = Score.query.order_by(Score.score).limit(5).all()
     rendered_hands = (render_template_string(HAND_TEMPLATE, hand=hand) for hand in query)
-    return render_template_string(TEMPLATE, title=f'{len(query)} lowest scores', data=rendered_hands)
+
+    return _render('{} lowest scores'.format(len(query)), rendered_hands)
 
 
 def highest_scores():
     query = Score.query.order_by(Score.score.desc()).limit(5).all()
     rendered_hands = (render_template_string(HAND_TEMPLATE, hand=hand) for hand in query)
-    return render_template_string(TEMPLATE, title=f'{len(query)} highest scores', data=rendered_hands)
+
+    return _render('{} highest scores'.format(len(query)), rendered_hands)
 
 
 def winningest_players():
@@ -31,7 +33,8 @@ def winningest_players():
         "{{ player.won_games|length }} games"
     players = sorted(Player.query.all(), key=lambda p:len(p.won_games), reverse=True)[:5]
     player_strings = (render_template_string(template, player=player) for player in players)
-    return render_template_string(TEMPLATE, title=f'{len(players)} winningest players', data=player_strings)
+
+    return _render('{} winningest players'.format(len(players)), player_strings)
 
 
 def best_players():
@@ -39,4 +42,9 @@ def best_players():
             "{{ (100 * player.won_games|length) // player.games|length }}% of games"
     players = sorted(Player.query.all(), key=lambda p:len(p.won_games)/len(p.games), reverse=True)[:5]
     player_strings = (render_template_string(template, player=player) for player in players)
-    return render_template_string(TEMPLATE, title=f'{len(players)} top players', data=player_strings)
+
+    return _render('{} top players'.format(len(players)), player_strings)
+
+
+def _render(title, data):
+    return render_template_string(TEMPLATE, title=title, data=data)
