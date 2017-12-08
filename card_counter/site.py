@@ -11,8 +11,12 @@ app = Flask(__name__)
 @app.route('/')
 def overview():
     count = Game.query.count()
-    stat_funcs = dict(getmembers(stats, isfunction))
-    rendered_stats = {name.replace('_', ' '): function() for name, function in random.sample(stat_funcs.items(), 2)}
+    rendered_stats = random.sample((
+        stats.lowest_scores(),
+        stats.highest_scores(),
+        stats.winningest_players(),
+        stats.best_players(),
+    ), 2)
     return render_template('index.html', total=count, stats=rendered_stats)
 
 @app.route('/player/<player_id>')
