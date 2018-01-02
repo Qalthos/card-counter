@@ -57,7 +57,7 @@ class Score(Base):
     player_id = Column(Integer, ForeignKey('player.id'))
 
     game = relationship('Game', back_populates='scores')
-    player = relationship('Player')
+    player = relationship('Player', back_populates='scores')
 
     @hybrid_property
     def score(self):
@@ -72,6 +72,8 @@ class Player(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
+
+    scores = relationship('Score', back_populates='player')
 
     @hybrid_property
     def games(self):

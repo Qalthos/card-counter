@@ -2,6 +2,7 @@ from inspect import getmembers, isfunction
 import random
 
 from flask import Flask, render_template
+import pygal
 
 from card_counter.stats import stat_functions
 from card_counter.models import Game, Player
@@ -24,7 +25,12 @@ def players():
 @app.route('/player/<player_id>')
 def show_player(player_id):
     player = Player.query.filter_by(id=player_id).one()
-    return render_template('player.html', player=player)
+
+    plot = pygal.Box()
+    for deal in ['six', 'seven', 'eight', 'nine', 'ten', 'score']:
+        plot.add(deal, [getattr(game, deal) for game in player.scores])
+
+    return render_template('player.html', player=player, plot=plot.render(disable_xml_declaration=True))
 
 
 @app.route('/games')

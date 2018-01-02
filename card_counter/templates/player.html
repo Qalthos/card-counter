@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {{ player.name }} has played {{ player.games|length }} and won {{ player.won_games|length }} games
+    <p>{{ player.name }} has played {{ player.games|length }} and won {{ player.won_games|length }} games</p>
+
+    <div>
+      {{ plot|safe }}
+    </div>
 {% endblock %}
