@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from datetime import datetime
 
-from card_counter.database import session, init_db
+from card_counter.database import DBSession, init_db
 from card_counter.models import Game, Score, Player
 
 HANDS = ['six', 'seven', 'eight', 'nine', 'ten']
@@ -19,16 +19,16 @@ def input_loop():
                 continue
 
             game = Game(date=game_date)
-            session.add(game)
+            DBSession.add(game)
             while True:
                 player_name = input("Player name: ")
                 if not player_name:
                     break
 
-                player = session.query(Player).filter(Player.name.like(player_name)).one_or_none()
+                player = DBSession.query(Player).filter(Player.name.like(player_name)).one_or_none()
                 if player is None:
                     player = Player(name=player_name)
-                    session.add(player)
+                    DBSession.add(player)
                 while True:
                     scores = [int(x) for x in input("Player scores: ").split()]
                     if len(scores) == 5:
@@ -36,9 +36,9 @@ def input_loop():
                         break
                     print("Need five scores (ex. '30 45 0 120 180')")
 
-                session.add(Score(game=game, player=player, **dict(zip(HANDS, scores))))
+                DBSession.add(Score(game=game, player=player, **dict(zip(HANDS, scores))))
 
-            session.commit()
+            DBSession.commit()
 
     except KeyboardInterrupt:
         pass
