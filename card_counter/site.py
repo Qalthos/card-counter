@@ -18,7 +18,7 @@ def overview():
 
 @app.route('/players')
 def players():
-    return render_template('list.html', items=Player.query.all())
+    return render_template('list.html', items=Player.query.order_by(Player.name).all())
 
 
 @app.route('/player/<player_id>')
@@ -34,7 +34,7 @@ def show_player(player_id):
 
 @app.route('/games')
 def games():
-    return render_template('list.html', items=Game.query.all())
+    return render_template('list.html', items=Game.query.order_by(Game.date, Game.id).all())
 
 
 @app.route('/game/<game_id>')
