@@ -36,7 +36,10 @@ class Score(Base):
         return sum((self.six, self.seven, self.eight, self.nine, self.ten))
 
     def __str__(self):
-        return "{1} scored {0.score} points: {0.six} {0.seven} {0.eight} {0.nine} {0.ten}".format(self, self.player)
+        return "{0} scored {1} points".format(self.player, self._linkable_score())
+
+    def _linkable_score(self):
+        return "<a href='{1}'>{0.score}</a>".format(self, url_for('show_game', game_id=self.game_id))
 
 
 class Game(Base):
