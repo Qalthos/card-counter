@@ -12,11 +12,15 @@ def input_loop():
             date_str = input("Date: ")
             if not date_str:
                 break
-            try:
-                game_date = datetime.strptime(date_str, '%Y-%m-%d').date()
-            except ValueError:
-                print('Date must be in YYYY-MM-DD format')
-                continue
+            elif date_str == "UNKNOWN":
+                print('Continuing with unknown date')
+                game_date = None
+            else:
+                try:
+                    game_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+                except ValueError:
+                    print('Date must be in YYYY-MM-DD format')
+                    continue
 
             game = Game(date=game_date)
             DBSession.add(game)

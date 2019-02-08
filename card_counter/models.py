@@ -82,7 +82,10 @@ class Game(Base):
         )
 
     def __str__(self):
-        return "<a href='{1}'>{0.date} [{0.id}]</a>".format(self, url_for('show_game', game_id=self.id))
+        date = self.date
+        if date is None:
+            date = "Unknown date"
+        return "<a href='{2}'>{1} [{0.id}]</a>".format(self, date, url_for('show_game', game_id=self.id))
 
 
 class Player(Base):
