@@ -1,3 +1,5 @@
+import itertools
+
 from flask import render_template_string
 
 from card_counter.models import Game, Player, Score
@@ -28,4 +30,13 @@ stat_functions = [
     lambda : _custom_render('{} top players', WIN_TEMPLATE.format("{{ 100 * item.won_games|length // item.games|length }}% of"),
                             sorted(Player.query.all(), key=lambda p:len(p.won_games)/len(p.games), reverse=True)),
     lambda : _render('{} most recent games', Game.query.order_by(Game.date.desc()).limit(5).all()),
+    lambda : _render('{} lowest losing scores', list(itertools.islice(lowest_losing_hands(), 5))),
 ]
+
+def lowest_losing_hands():
+    winners = Game.query.values(Game.winning_hand)
+    winners = [score for scores in winners for score in scores]
+    scores = Score.query.order_by(Score.score.asc())
+    for score in scores.all():
+        if score.id not in winners:
+            yield score

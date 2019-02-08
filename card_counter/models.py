@@ -61,7 +61,7 @@ class Game(Base):
 
     @winning_hand.expression
     def winning_hand(cls):
-        return select([Score]).where(and_(
+        return select([Score.id]).where(and_(
             Score.game_id == cls.id,
             Score.score == select([func.min(Score.score)]).where(Score.game_id == cls.id).correlate(cls)
         ))
